@@ -1,0 +1,11 @@
+{
+  "name": "shot-on-iphone",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:content": "node scripts/build-series-index.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
