@@ -154,6 +154,13 @@ a:hover {
   overflow: hidden;
 }
 
+.hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -168,6 +175,36 @@ a:hover {
   position: relative;
   z-index: 1;
   max-width: 720px;
+}
+
+.hero-device {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-device::before {
+  content: "";
+  position: absolute;
+  width: clamp(220px, 32vw, 420px);
+  height: clamp(220px, 32vw, 420px);
+  background: radial-gradient(circle, rgba(199, 199, 204, 0.18), rgba(10, 10, 11, 0) 70%);
+  filter: blur(2px);
+}
+
+.hero-device-frame {
+  width: clamp(180px, 26vw, 340px);
+  position: relative;
+  transform: rotate(-2deg);
+  filter: drop-shadow(0 32px 70px rgba(0, 0, 0, 0.45));
+}
+
+.hero-device-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .hero-title {
@@ -293,6 +330,12 @@ a:hover {
   background: linear-gradient(135deg, rgba(29, 31, 36, 0.8), rgba(17, 18, 20, 0.4));
   border: 1px solid var(--line-700);
   box-shadow: var(--shadow);
+}
+
+.photo-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .photo-media img {
@@ -512,6 +555,14 @@ a:hover {
 @media (max-width: 900px) {
   .nav-links {
     display: none;
+  }
+
+  .hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-device {
+    margin-top: 2rem;
   }
 
   .spread-pair,

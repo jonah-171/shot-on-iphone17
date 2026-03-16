@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:content": "node scripts/build-series-index.mjs"
+    "build:content": "node scripts/build-series-index.mjs",
+    "build:images": "bash scripts/build-avif.sh"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"

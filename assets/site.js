@@ -1,4 +1,5 @@
 const EMAIL = "jonahkim@iskonline.org";
+const AVIF_WIDTHS = [480, 720, 960, 1280, 1600, 1920];
 
 const page = document.body.dataset.page;
 const base = document.body.dataset.base || ".";
@@ -36,17 +37,41 @@ function ratioToCss(ratio) {
   return ratio.replace(":", " / ");
 }
 
-function renderPhoto(photo) {
+function buildAvifSrcset(imagePath) {
+  if (!imagePath) return "";
+  const base = imagePath.replace(/\.(jpe?g|png)$/i, "");
+  return AVIF_WIDTHS.map((width) => `${base}-w${width}.avif ${width}w`).join(", ");
+}
+
+function sizesForLayout(layout) {
+  if (layout === "full") {
+    return "(max-width: 900px) 100vw, (max-width: 1280px) 92vw, 1240px";
+  }
+  if (layout === "pair-large") {
+    return "(max-width: 900px) 100vw, (max-width: 1280px) 60vw, 820px";
+  }
+  if (layout === "pair-small") {
+    return "(max-width: 900px) 100vw, (max-width: 1280px) 40vw, 460px";
+  }
+  return "(max-width: 900px) 100vw, 70vw";
+}
+
+function renderPhoto(photo, layout = "full") {
   const aspect = ratioToCss(photo.aspect_ratio);
   const exif = photo.exif ? photo.exif.replace(/,/g, " | ") : "";
   const title = photo.title || "Untitled";
   const note = photo.note || "";
   const image = photo.image || "";
+  const avifSrcset = buildAvifSrcset(image);
+  const sizes = sizesForLayout(layout);
 
   return `
     <figure class="photo reveal">
       <div class="photo-media" style="--aspect: ${aspect}">
-        <img src="${image}" alt="${title}" loading="lazy" />
+        <picture>
+          <source type="image/avif" srcset="${avifSrcset}" sizes="${sizes}" />
+          <img src="${image}" alt="${title}" loading="lazy" decoding="async" sizes="${sizes}" />
+        </picture>
         <div class="photo-overlay">
           <span class="corner tl"></span>
           <span class="corner tr"></span>
@@ -88,13 +113,13 @@ function renderSpreads(photos, limit) {
   return spreads
     .map((spread, spreadIndex) => {
       if (spread.type === "full") {
-        return `<div class="spread spread-full">${renderPhoto(spread.photos[0])}</div>`;
+        return `<div class="spread spread-full">${renderPhoto(spread.photos[0], "full")}</div>`;
       }
       const reverse = spreadIndex % 2 === 1 ? "reverse" : "";
       return `
         <div class="spread spread-pair ${reverse}">
-          ${renderPhoto(spread.photos[0])}
-          ${renderPhoto(spread.photos[1])}
+          ${renderPhoto(spread.photos[0], "pair-large")}
+          ${renderPhoto(spread.photos[1], "pair-small")}
         </div>
       `;
     })

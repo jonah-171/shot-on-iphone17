@@ -23,15 +23,42 @@
 
     <main>
       <section class="hero" id="top">
-        <div class="container hero-content">
-          <div class="section-kicker reveal">Portfolio</div>
-          <h1 class="hero-title reveal">Shot on iPhone</h1>
-          <p class="hero-tagline reveal">
-            Skill over gear. Proof in every frame.
-          </p>
-          <div class="hero-actions reveal">
-            <a class="button button-primary" href="#latest">View Gallery</a>
-            <a class="button button-ghost" href="#process">Read Process</a>
+        <div class="container hero-layout">
+          <div class="hero-content">
+            <div class="section-kicker reveal">Portfolio</div>
+            <h1 class="hero-title reveal">Shot on iPhone</h1>
+            <p class="hero-tagline reveal">
+              Skill over gear. Proof in every frame.
+            </p>
+            <div class="hero-actions reveal">
+              <a class="button button-primary" href="#latest">View Gallery</a>
+              <a class="button button-ghost" href="#process">Read Process</a>
+            </div>
+          </div>
+          <div class="hero-device reveal">
+            <div class="hero-device-frame">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset="
+                    /images/website-main/iphone-17-pro-deepblue-w480.avif 480w,
+                    /images/website-main/iphone-17-pro-deepblue-w720.avif 720w,
+                    /images/website-main/iphone-17-pro-deepblue-w960.avif 960w,
+                    /images/website-main/iphone-17-pro-deepblue-w1280.avif 1280w,
+                    /images/website-main/iphone-17-pro-deepblue-w1600.avif 1600w,
+                    /images/website-main/iphone-17-pro-deepblue-w1920.avif 1920w
+                  "
+                  sizes="(max-width: 900px) 60vw, (max-width: 1280px) 40vw, 360px"
+                />
+                <img
+                  src="/images/website-main/iphone-17-pro-deepblue.png"
+                  alt="Jonah Kim's iPhone used for this portfolio"
+                  loading="eager"
+                  decoding="async"
+                  sizes="(max-width: 900px) 60vw, (max-width: 1280px) 40vw, 360px"
+                />
+              </picture>
+            </div>
           </div>
         </div>
       </section>
