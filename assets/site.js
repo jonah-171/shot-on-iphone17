@@ -4,6 +4,20 @@ const AVIF_WIDTHS = [480, 720, 960, 1280, 1600, 1920];
 const page = document.body.dataset.page;
 const base = document.body.dataset.base || ".";
 
+function resolveAssetPath(path) {
+  if (!path) return "";
+  if (/^https?:\/\//.test(path) || path.startsWith("data:")) {
+    return path;
+  }
+  if (path.startsWith(".")) {
+    return path;
+  }
+  if (path.startsWith("/")) {
+    return base === "." ? path.slice(1) : `${base}${path}`;
+  }
+  return base === "." ? path : `${base}/${path}`;
+}
+
 function seriesUrl(slug) {
   const prefix = base === "." ? "series/" : `${base}/series/`;
   return `${prefix}?slug=${encodeURIComponent(slug)}`;
@@ -39,8 +53,9 @@ function ratioToCss(ratio) {
 
 function buildAvifSrcset(imagePath) {
   if (!imagePath) return "";
-  const base = imagePath.replace(/\.(jpe?g|png)$/i, "");
-  return AVIF_WIDTHS.map((width) => `${base}-w${width}.avif ${width}w`).join(", ");
+  const resolved = resolveAssetPath(imagePath);
+  const basePath = resolved.replace(/\.(jpe?g|png)$/i, "");
+  return AVIF_WIDTHS.map((width) => `${basePath}-w${width}.avif ${width}w`).join(", ");
 }
 
 function sizesForLayout(layout) {
@@ -61,8 +76,8 @@ function renderPhoto(photo, layout = "full") {
   const exif = photo.exif ? photo.exif.replace(/,/g, " | ") : "";
   const title = photo.title || "Untitled";
   const note = photo.note || "";
-  const image = photo.image || "";
-  const avifSrcset = buildAvifSrcset(image);
+  const image = resolveAssetPath(photo.image || "");
+  const avifSrcset = buildAvifSrcset(photo.image || "");
   const sizes = sizesForLayout(layout);
 
   return `

@@ -13,16 +13,31 @@ find "$ROOT_DIR/images" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "
   base="${file%.*}"
   ext="${file##*.}"
   ext="$(printf '%s' "$ext" | tr '[:upper:]' '[:lower:]')"
-  pix_fmt="yuv420p10le"
-  if [[ "$ext" == "png" ]]; then
-    pix_fmt="yuva420p10le"
+  original_width=$(sips -g pixelWidth "$file" | awk '/pixelWidth/ {print $2}')
+  if [[ "$ext" == "png" ]] && command -v avifenc >/dev/null 2>&1; then
+    tmp_dir="$(mktemp -d)"
+    for width in "${WIDTHS[@]}"; do
+      if [[ "$width" -gt "$original_width" ]]; then
+        continue
+      fi
+      output="${base}-w${width}.avif"
+      tmp_png="${tmp_dir}/$(basename "$base")-w${width}.png"
+      sips -s format png --resampleWidth "$width" "$file" --out "$tmp_png" >/dev/null
+      avifenc --yuv 444 -q 63 --speed 6 "$tmp_png" "$output" >/dev/null
+    done
+    rm -rf "$tmp_dir"
+  else
+    pix_fmt="yuv420p10le"
+    for width in "${WIDTHS[@]}"; do
+      if [[ "$width" -gt "$original_width" ]]; then
+        continue
+      fi
+      output="${base}-w${width}.avif"
+      ffmpeg -nostdin -y -loglevel error -i "$file" \
+        -vf "scale=w=${width}:h=-2:flags=lanczos" \
+        -frames:v 1 -c:v libsvtav1 -crf 30 -preset 6 -pix_fmt "${pix_fmt}" \
+        "$output"
+    done
   fi
-  for width in "${WIDTHS[@]}"; do
-    output="${base}-w${width}.avif"
-    ffmpeg -nostdin -y -loglevel error -i "$file" \
-      -vf "scale=w=${width}:h=-2:flags=lanczos" \
-      -frames:v 1 -c:v libsvtav1 -crf 30 -preset 6 -pix_fmt "${pix_fmt}" \
-      "$output"
-  done
   echo "AVIF variants created for ${file}"
-  done
+done
