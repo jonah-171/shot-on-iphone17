@@ -18,8 +18,8 @@ function resolveAssetPath(path) {
   return base === "." ? path : `${base}/${path}`;
 }
 
-function seriesUrl(slug) {
-  const prefix = base === "." ? "series/" : `${base}/series/`;
+function blogUrl(slug) {
+  const prefix = base === "." ? "blog/" : `${base}/blog/`;
   return `${prefix}?slug=${encodeURIComponent(slug)}`;
 }
 
@@ -27,18 +27,18 @@ function archiveUrl() {
   return base === "." ? "archive/" : `${base}/archive/`;
 }
 
-async function loadSeriesIndex() {
+async function loadBlogIndex() {
   try {
     const response = await fetch(`${base}/content/series/index.json`, { cache: "no-store" });
     if (!response.ok) {
-      throw new Error("Failed to load series index");
+      throw new Error("Failed to load blog index");
     }
     const data = await response.json();
     return data.sort((a, b) => new Date(b.date) - new Date(a.date));
   } catch (error) {
     const fallback = document.querySelector("[data-fallback]");
     if (fallback) {
-      fallback.textContent = "Series data could not be loaded. Run the content build script.";
+      fallback.textContent = "Entry data could not be loaded. Run the content build script.";
     }
     return null;
   }
@@ -73,7 +73,6 @@ function sizesForLayout(layout) {
 
 function renderPhoto(photo, layout = "full") {
   const aspect = ratioToCss(photo.aspect_ratio);
-  const exif = photo.exif ? photo.exif.replace(/,/g, " | ") : "";
   const title = photo.title || "Untitled";
   const note = photo.note || "";
   const image = resolveAssetPath(photo.image || "");
@@ -92,11 +91,12 @@ function renderPhoto(photo, layout = "full") {
           <span class="corner tr"></span>
           <span class="corner bl"></span>
           <span class="corner br"></span>
-          <div class="exif">${exif}</div>
-          <div class="note">${note}</div>
         </div>
       </div>
-      <figcaption class="photo-title">${title}</figcaption>
+      <figcaption class="photo-caption">
+        <div class="photo-title">${title}</div>
+        ${note ? `<div class="photo-note">${note}</div>` : ""}
+      </figcaption>
     </figure>
   `;
 }
@@ -141,12 +141,12 @@ function renderSpreads(photos, limit) {
     .join("");
 }
 
-function renderArchiveCard(theme) {
+function renderArchiveCard(entry) {
   return `
-    <a class="archive-card reveal" href="${seriesUrl(theme.slug)}">
-      <div class="archive-card-meta">${theme.date} | ${theme.location}</div>
-      <div class="archive-card-title">${theme.title}</div>
-      <div>${theme.summary}</div>
+    <a class="archive-card reveal" href="${blogUrl(entry.slug)}">
+      <div class="archive-card-meta">${entry.date} | ${entry.location}</div>
+      <div class="archive-card-title">${entry.title}</div>
+      <div>${entry.summary}</div>
     </a>
   `;
 }
@@ -199,7 +199,7 @@ function renderHome(seriesIndex) {
   if (latestTitle) latestTitle.textContent = latest.title;
   if (latestMeta) latestMeta.textContent = `${latest.date} | ${latest.location}`;
   if (latestSummary) latestSummary.textContent = latest.summary;
-  if (latestLink) latestLink.setAttribute("href", seriesUrl(latest.slug));
+  if (latestLink) latestLink.setAttribute("href", blogUrl(latest.slug));
 
   if (spreadsContainer) {
     if (latest.photos && latest.photos.length) {
@@ -208,7 +208,7 @@ function renderHome(seriesIndex) {
     } else {
       spreadsContainer.innerHTML = `
         <div class="empty-state reveal">
-          Series photography will be added soon. Check back for the first drop.
+          Entry photography will be added soon. Check back for the first drop.
         </div>
       `;
     }
@@ -220,17 +220,17 @@ function renderHome(seriesIndex) {
   }
 }
 
-function renderSeriesPage(seriesIndex) {
+function renderBlogPage(seriesIndex) {
   const slug = new URLSearchParams(window.location.search).get("slug");
-  const container = document.querySelector("[data-series-container]");
+  const container = document.querySelector("[data-blog-container]");
   if (!container) return;
 
   if (!slug) {
     container.innerHTML = `
       <div class="section">
         <div class="container">
-          <h2 class="section-title">Series not found</h2>
-          <p data-fallback>Provide a series slug in the URL.</p>
+          <h2 class="section-title">Entry not found</h2>
+          <p data-fallback>Provide an entry slug in the URL.</p>
           <a class="button button-ghost" href="${archiveUrl()}">Back to archive</a>
         </div>
       </div>
@@ -238,13 +238,13 @@ function renderSeriesPage(seriesIndex) {
     return;
   }
 
-  const theme = seriesIndex.find((item) => item.slug === slug);
-  if (!theme) {
+  const entry = seriesIndex.find((item) => item.slug === slug);
+  if (!entry) {
     container.innerHTML = `
       <div class="section">
         <div class="container">
-          <h2 class="section-title">Series not found</h2>
-          <p data-fallback>We could not locate the requested theme.</p>
+          <h2 class="section-title">Entry not found</h2>
+          <p data-fallback>We could not locate the requested entry.</p>
           <a class="button button-ghost" href="${archiveUrl()}">Back to archive</a>
         </div>
       </div>
@@ -252,22 +252,22 @@ function renderSeriesPage(seriesIndex) {
     return;
   }
 
-  const hasPhotos = theme.photos && theme.photos.length;
+  const hasPhotos = entry.photos && entry.photos.length;
   container.innerHTML = `
     <section class="section" data-index="01">
       <div class="container">
-        <div class="section-kicker">Series</div>
-        <h1 class="section-title">${theme.title}</h1>
-        <div class="latest-theme-meta">${theme.date} | ${theme.location}</div>
-        <p>${theme.summary}</p>
+        <div class="section-kicker">Entry</div>
+        <h1 class="section-title">${entry.title}</h1>
+        <div class="latest-theme-meta">${entry.date} | ${entry.location}</div>
+        <p>${entry.summary}</p>
       </div>
     </section>
     <section class="section">
       <div class="container">
         ${
           hasPhotos
-            ? `<div class="spreads">${renderSpreads(theme.photos)}</div>`
-            : `<div class="empty-state reveal">Images for this series will be added soon.</div>`
+            ? `<div class="spreads">${renderSpreads(entry.photos)}</div>`
+            : `<div class="empty-state reveal">Images for this entry will be added soon.</div>`
         }
       </div>
     </section>
@@ -283,15 +283,15 @@ function renderArchivePage(seriesIndex) {
 }
 
 async function init() {
-  const seriesIndex = await loadSeriesIndex();
+  const seriesIndex = await loadBlogIndex();
   if (!seriesIndex) return;
 
   if (page === "home") {
     renderHome(seriesIndex);
   }
 
-  if (page === "series") {
-    renderSeriesPage(seriesIndex);
+  if (page === "blog") {
+    renderBlogPage(seriesIndex);
   }
 
   if (page === "archive") {

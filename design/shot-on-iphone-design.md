@@ -64,7 +64,7 @@
 - H1: 56-72px, weight 600, tracking -0.01em, line-height 1.0.
 - H2: 32-40px, weight 500, tracking -0.005em.
 - Body: 16-18px, weight 400, line-height 1.6.
-- Caption/EXIF: 12-13px, weight 500, tracking 0.06em (mono), line-height 1.4.
+- Caption: 12-13px, weight 500, tracking 0.04em, line-height 1.4.
 
 ### Title Treatment
 - Text: "Shot on iPhone" set in Display weight 600.
@@ -121,10 +121,9 @@
 - Editorial spreads repeating pattern:
   - Full-bleed single image -> asymmetrical two-up -> full-bleed.
 - Each image has overlay elements:
-  - EXIF badge: mono, uppercase, 12px, background bg-800 at 80% opacity.
   - Decision note: 1-2 lines, text-300, positioned lower-left.
   - Crop marks: 1px line-700, subtle corner brackets.
-- Hover: image scale 1.02, EXIF badge brightens to text-100.
+- Hover: image scale 1.02, note brightens to text-100.
 
 ### 5) Process / Constraints
 - Format: 3-5 item checklist or timeline.
@@ -161,14 +160,14 @@
 ## Interaction and Motion
 - Page load: title and tagline fade in + translateY(10px) over 500ms.
 - Scroll reveal: staggered image and text fade-in (100ms increments).
-- Hover (desktop): image scale 1.02, EXIF badge glow.
+- Hover (desktop): image scale 1.02, note glow.
 - Reduced motion: remove transforms, keep opacity transitions only.
 
 ## Responsive Behavior
 - Mobile: hero title wraps to 2 lines; CTAs stack vertically.
 - Gallery: all full-bleed images become full-width with 16px side padding.
 - Asym grids collapse to single column with consistent spacing.
-- EXIF badges move to top-left with solid bg for readability.
+- Notes move to top-left with solid bg for readability.
 
 ## Content Model (Repo Collections)
 
@@ -188,8 +187,7 @@
 - title
 - location
 - date
-- exif: ISO, shutter, focal length, lens
-- technique note (1-2 lines)
+- note: 1-2 lines describing technique or intent
 - image path
 
 ### Example (front matter style)
@@ -204,7 +202,6 @@ photos:
   - title: Tram Window
     location: Krakow Old Town
     date: 2026-01-18
-    exif: ISO 64, 1/250, 26mm
     note: Exposed for highlights, then lifted midtones in post.
     image: /images/fog-and-stone/01.jpg
 ```
@@ -215,8 +212,7 @@ photos:
 - Title
 - Location
 - Date
-- EXIF: ISO, shutter, focal length, lens
-- Technique note (1-2 lines)
+- Note: 1-2 lines describing technique or intent
 
 ### Placeholder Copy Examples
 - Name: "Jonah Kim"
@@ -233,9 +229,9 @@ photos:
 ## Acceptance Checks
 - Visual hierarchy is clear on desktop and mobile.
 - Title treatment feels Apple-like but does not copy branding.
-- EXIF overlays remain legible on varied imagery.
+- Notes remain legible on varied imagery.
 - Reduced motion mode removes transforms.
-- Low-contrast images still show readable EXIF badges.
+- Low-contrast images still show readable notes.
 - Latest theme displays correctly and archive grows without layout break.
 
 ## Implementation Notes (Non-code)
