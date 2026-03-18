@@ -183,6 +183,51 @@ function setupReveals() {
   elements.forEach((el) => observer.observe(el));
 }
 
+function setupHeroParallax() {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (reducedMotion.matches) {
+    return;
+  }
+
+  let ticking = false;
+
+  function updateParallax() {
+    ticking = false;
+
+    const rect = hero.getBoundingClientRect();
+    const progress = Math.min(Math.max(-rect.top / Math.max(rect.height, 1), 0), 1);
+    const backgroundShift = progress * Math.min(window.innerHeight * 0.08, 72);
+    const foregroundShift = progress * -Math.min(window.innerHeight * 0.14, 120);
+
+    hero.style.setProperty("--hero-background-shift", `${backgroundShift.toFixed(2)}px`);
+    hero.style.setProperty("--hero-foreground-shift", `${foregroundShift.toFixed(2)}px`);
+  }
+
+  function requestTick() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(updateParallax);
+  }
+
+  updateParallax();
+  window.addEventListener("scroll", requestTick, { passive: true });
+  window.addEventListener("resize", requestTick);
+
+  if (typeof reducedMotion.addEventListener === "function") {
+    reducedMotion.addEventListener("change", (event) => {
+      if (event.matches) {
+        hero.style.setProperty("--hero-background-shift", "0px");
+        hero.style.setProperty("--hero-foreground-shift", "0px");
+        return;
+      }
+      requestTick();
+    });
+  }
+}
+
 function renderHome(seriesIndex) {
   const latest = seriesIndex.find((item) => item.photos && item.photos.length) || seriesIndex[0];
   if (!latest) {
@@ -283,6 +328,10 @@ function renderArchivePage(seriesIndex) {
 }
 
 async function init() {
+  if (page === "home") {
+    setupHeroParallax();
+  }
+
   const seriesIndex = await loadBlogIndex();
   if (!seriesIndex) return;
 
