@@ -5,77 +5,77 @@
     "date": "2026-03-09",
     "location": "Krakow, Poland",
     "summary": "Brief pauses between movement, where posture and light take over.",
-    "hero_image": "/images/intermission/hero.jpg",
+    "hero_image": "/images/intermission/Day4.jpeg",
     "photos": [
       {
-        "title": "Platform Glow",
+        "title": "Winter Amber",
         "location": "Glowny Station",
         "date": "2026-03-10",
-        "note": "Let the ceiling light define the edge of the figure.",
+        "note": "The sun dissolves into the background, becoming the subject itself, while dense foreground layers frame a quiet, almost enclosed piece of nature.",
         "image": "/images/intermission/Day1.jpeg",
         "aspect_ratio": "4:3"
       },
       {
-        "title": "Quiet Seat",
+        "title": "Suburban Mist",
         "location": "Tram Stop",
         "date": "2026-03-10",
-        "note": "Held focus on hands, let the background soften.",
+        "note": "Steam catches the low sun, turning an ordinary suburban scene into something fleeting and cinematic, with tree silhouettes cutting sharply through the haze.",
         "image": "/images/intermission/Day2.jpeg",
         "aspect_ratio": "3:4"
       },
       {
-        "title": "Crosswalk Pause",
+        "title": "Downtown Davos",
         "location": "Old Town",
         "date": "2026-03-10",
-        "note": "Timed the stillness between light cycles.",
+        "note": "A stitched perspective compresses the town into a dense, almost overwhelming landscape, blurring the line between observation and scale.",
         "image": "/images/intermission/Day3.jpeg",
         "aspect_ratio": "3961:6216"
       },
       {
-        "title": "Window Reflection",
+        "title": "Monochromatic Valley",
         "location": "Kazimierz",
         "date": "2026-03-10",
-        "note": "Balanced reflection and subject for a layered feel.",
+        "note": "A restrained palette flattens the scene, while a single leading line quietly pulls the eye through the valley, softened by snow that mimics the texture of film grain.",
         "image": "/images/intermission/Day4.jpeg",
         "aspect_ratio": "3:4"
       },
       {
-        "title": "Waiting Room",
+        "title": "Storm on Piste",
         "location": "Podgorze",
         "date": "2026-03-10",
-        "note": "Kept the frame centered to emphasize symmetry.",
+        "note": "A lone figure dissolves into the haze, where imbalance and negative space amplify the sense of isolation against the storm.",
         "image": "/images/intermission/Day5.jpeg",
         "aspect_ratio": "3:4"
       },
       {
-        "title": "Departure Line",
+        "title": "Fresh smell of Pine",
         "location": "Krakow Main Station",
         "date": "2026-03-10",
-        "note": "Used the platform edge as a leading line.",
+        "note": "Framed through a natural arch, the scene reveals itself in layers-snow, shadow, and filtered light-like a brief glimpse beyond a barrier.",
         "image": "/images/intermission/Day6.jpeg",
         "aspect_ratio": "3021:3422"
       },
       {
-        "title": "Ticket Booth",
+        "title": "Miles of Alps",
         "location": "Kleparz",
         "date": "2026-03-10",
-        "note": "Kept contrast low to preserve the quiet tone.",
+        "note": "The scale stretches beyond comprehension, inviting a quiet question: how far could you go before the landscape swallows you whole?",
         "image": "/images/intermission/Day7.jpeg",
         "aspect_ratio": "3:2"
       },
       {
-        "title": "Escalator Hush",
+        "title": "Rapid Descent",
         "location": "Galeria Krakowska",
         "date": "2026-03-10",
-        "note": "Framed the diagonal to slow the eye.",
+        "note": "A fleeting moment of motion-captured mid-descent-where diagonal energy and centered framing collide to heighten the sense of speed.",
         "image": "/images/intermission/Day8.jpeg",
         "aspect_ratio": "2015:3023"
       },
       {
-        "title": "Last Train",
+        "title": "The Warmest Cold Day",
         "location": "Glowny Station",
         "date": "2026-03-10",
-        "note": "Waited for the platform to clear before exposure.",
+        "note": "Cold concrete tones anchor the frame, allowing the warmth of the sky to breathe-resisting over-processing keeps the moment honest.",
         "image": "/images/intermission/Day9.jpeg",
         "aspect_ratio": "3:4"
       }
@@ -87,45 +87,45 @@
     "date": "2026-02-19",
     "location": "Krakow, Poland",
     "summary": "Quiet density, winter air, and the space the light leaves behind.",
-    "hero_image": "/images/between-the-trees/hero.jpg",
+    "hero_image": "/images/between-the-trees/Final-3.jpeg",
     "photos": [
       {
-        "title": "Pine Corridor",
+        "title": "Up",
         "location": "Wolanski Forest",
         "date": "2026-02-12",
-        "note": "Aligned trunks to create a soft cadence in the frame.",
+        "note": "Ultrawide perspective aimed into the sky, exaggerating the height of the trees. Contrast takes priority over color.",
         "image": "/images/between-the-trees/Final-1.jpeg",
         "aspect_ratio": "4:3"
       },
       {
-        "title": "Frost Line",
+        "title": "Biosphere",
         "location": "Las Wolski",
         "date": "2026-02-12",
-        "note": "Exposed for highlights to keep the ice quiet.",
+        "note": "Shot at minimal focus distance. Fine plant hairs and droplet magnification reveal intricate detail within an otherwise dim, enclosed space.",
         "image": "/images/between-the-trees/Final-2.jpeg",
         "aspect_ratio": "3:2"
       },
       {
-        "title": "Clearing",
+        "title": "Liquid Glass",
         "location": "Bielany",
         "date": "2026-02-12",
-        "note": "Held the horizon low to open the canopy.",
+        "note": "Focusing on the tree reflection rather than the puddle itself creates a more introspective mood.",
         "image": "/images/between-the-trees/Final-3.jpeg",
         "aspect_ratio": "3:2"
       },
       {
-        "title": "Birch Study",
+        "title": "Frost Creek",
         "location": "Tyniec",
         "date": "2026-02-12",
-        "note": "Tightened the frame to emphasize repeating texture.",
+        "note": "A wide angle with the creek framed off-center. The composition divides horizontally into thirds: leaves, dark mud, and ice.",
         "image": "/images/between-the-trees/Final-4.jpeg",
         "aspect_ratio": "4:3"
       },
       {
-        "title": "Path in Grey",
+        "title": "Tiny Stream",
         "location": "Las Wolski",
         "date": "2026-02-12",
-        "note": "Waited for a single figure to anchor scale.",
+        "note": "Shot at close range for the shallowest depth of field. In post, a subtle golden fade enhances the warmth.",
         "image": "/images/between-the-trees/Final-5.jpeg",
         "aspect_ratio": "3022:4029"
       }
@@ -137,8 +137,89 @@
     "date": "2026-02-16",
     "location": "Krakow, Poland",
     "summary": "Found fragments and small histories, collected with patient light.",
-    "hero_image": "/images/pocket-archeology/hero.jpg",
-    "photos": []
+    "hero_image": "/images/pocket-archeology/IMG_2442.jpeg",
+    "photos": [
+      {
+        "title": "Confiscated Motion",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I froze the empty phone case mid-throw with a high shutter speed, keeping the background soft so the shape feels suspended and slightly unreal. The missing phone matters: it points directly to the school rule, turning absence into the subject.",
+        "image": "/images/pocket-archeology/IMG_2436.jpeg",
+        "aspect_ratio": "1382:1843"
+      },
+      {
+        "title": "Carried Reflection",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I moved in close on the reflective Apple logo of the MacBook I always keep in my bag, letting the polished surface catch light like a small mirror. The tight framing makes a familiar object feel personal, quiet, and almost hidden.",
+        "image": "/images/pocket-archeology/IMG_2438.jpeg",
+        "aspect_ratio": "7986:5990"
+      },
+      {
+        "title": "Measured Still Life",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I arranged the stationery with strict spacing and let the diagonal shadow divide the frame, using warm floor tones and minimal composition to make the objects feel deliberate and quiet.",
+        "image": "/images/pocket-archeology/IMG_2442.jpeg",
+        "aspect_ratio": "3:4"
+      },
+      {
+        "title": "Binder Spine",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I treated the binder as a close-detail study, using the shallow angle, repeated lines, and saturated edge colors to make something practical feel graphic. The framing focuses on texture and structure rather than the whole object, making the binder read like part of the school day's architecture.",
+        "image": "/images/pocket-archeology/IMG_2439.jpeg",
+        "aspect_ratio": "5990:7986"
+      },
+      {
+        "title": "Teeth of the Ordinary",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I pushed in close with a shallow focal plane so the zipper teeth become macro-like, using the cool blue fabric and hard diagonal framing to turn a common object into something mechanical and precise.",
+        "image": "/images/pocket-archeology/IMG_2434.jpeg",
+        "aspect_ratio": "4:3"
+      },
+      {
+        "title": "Glass Current",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "Shot low through the bottle, the refracted water bends the background into motion, while the bright patio light and clean cyan tones make the pour feel suspended and sculptural.",
+        "image": "/images/pocket-archeology/IMG_2435.jpeg",
+        "aspect_ratio": "3289:3024"
+      },
+      {
+        "title": "Beacon in Noon Light",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "The low angle exaggerates the bottle into a tower, with the sun flare and deep blue sky giving the simple form a bold, almost monumental presence.",
+        "image": "/images/pocket-archeology/IMG_2437.jpeg",
+        "aspect_ratio": "3:4"
+      },
+      {
+        "title": "Edge of Glare",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I framed directly into the sun from beneath the object, allowing lens flare and shadow to dominate, because the image is less about the subject and more about the collision of light and form.",
+        "image": "/images/pocket-archeology/IMG_2440.jpeg",
+        "aspect_ratio": "6034:8044"
+      },
+      {
+        "title": "Small Stage",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "The bottle and folded ruler are placed against the railing like props, with the blossoms blurred behind them and the hard shadow grounding the scene in bright afternoon clarity.",
+        "image": "/images/pocket-archeology/IMG_2441.jpeg",
+        "aspect_ratio": "4:3"
+      },
+      {
+        "title": "Shadow Notes",
+        "location": "Krakow, Poland",
+        "date": "2026-02-16",
+        "note": "I exposed for the sunlit deck so the objects disappear into graphic silhouettes, letting their shapes read like marks on paper: simple, abstract, and sharply timed.",
+        "image": "/images/pocket-archeology/IMG_2443.jpeg",
+        "aspect_ratio": "6401:6048"
+      }
+    ]
   },
   {
     "slug": "an-artificial-sun",
@@ -146,7 +227,7 @@
     "date": "2026-03-12",
     "location": "Krakow, Poland",
     "summary": "Night light engineered to feel like daylight, shaped by the city.",
-    "hero_image": "/images/an-artificial-sun/hero.jpg",
+    "hero_image": "",
     "photos": []
   }
 ]

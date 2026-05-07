@@ -14,7 +14,22 @@ function parseFrontMatter(contents, fileName) {
   if (!match) {
     throw new Error(`Missing front matter in ${fileName}`);
   }
-  return yaml.load(match[1]);
+  return normalizeDates(yaml.load(match[1]));
+}
+
+function normalizeDates(value) {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+  if (Array.isArray(value)) {
+    return value.map(normalizeDates);
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [key, normalizeDates(nestedValue)])
+    );
+  }
+  return value;
 }
 
 function validateSeries(data, fileName) {
@@ -30,7 +45,7 @@ function validateSeries(data, fileName) {
 async function buildIndex() {
   const entries = await fs.readdir(seriesDir, { withFileTypes: true });
   const files = entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".md") && entry.name !== "README.md")
     .map((entry) => entry.name);
 
   const series = [];
@@ -43,7 +58,14 @@ async function buildIndex() {
     series.push(data);
   }
 
-  series.sort((a, b) => new Date(b.date) - new Date(a.date));
+  series.sort((a, b) => {
+    const aHasPhotos = Array.isArray(a.photos) && a.photos.length > 0;
+    const bHasPhotos = Array.isArray(b.photos) && b.photos.length > 0;
+    if (aHasPhotos !== bHasPhotos) {
+      return aHasPhotos ? -1 : 1;
+    }
+    return new Date(b.date) - new Date(a.date);
+  });
   await fs.writeFile(indexPath, `${JSON.stringify(series, null, 2)}\n`, "utf8");
   console.log(`Wrote ${series.length} series to ${indexPath}`);
 }

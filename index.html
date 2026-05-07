@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shot on iPhone - Jonah Kim</title>
-    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260507-manifesto-image-1" />
   </head>
   <body data-page="home" data-base=".">
     <header class="site-header">
@@ -32,10 +32,10 @@
               images/website-main/front-page-w3200.avif 3200w,
               images/website-main/front-page-w4032.avif 4032w
             "
-            sizes="(max-aspect-ratio: 3/2) 155vh, 110vw"
+            sizes="100vw"
           />
           <img
-            src="images/website-main/front-page.avif"
+            src="images/website-main/front-page.jpeg"
             alt=""
             loading="eager"
             decoding="async"
@@ -50,7 +50,7 @@
               images/website-main/front-page-w3200.avif 3200w,
               images/website-main/front-page-w4032.avif 4032w
             "
-            sizes="(max-aspect-ratio: 3/2) 155vh, 110vw"
+            sizes="100vw"
           />
         </picture>
         <div class="container hero-layout">
@@ -69,16 +69,26 @@
       </section>
 
       <section class="section manifesto" id="manifesto" data-index="01">
-        <div class="container">
-          <div class="section-kicker reveal">Manifesto</div>
-          <div class="manifesto-quote reveal">
-            Great images come from attention, not equipment.
+        <div class="container manifesto-layout">
+          <div class="manifesto-copy">
+            <div class="section-kicker reveal">Manifesto</div>
+            <div class="manifesto-quote reveal">
+              Great images come from attention, not equipment.
+            </div>
+            <div class="manifesto-underline"></div>
+            <p class="reveal">
+              This portfolio is an experiment in constraint. Everything is made on iPhone, so the
+              emphasis stays on timing, light, and disciplined framing.
+            </p>
           </div>
-          <div class="manifesto-underline"></div>
-          <p class="reveal">
-            This portfolio is an experiment in constraint. Everything is made on iPhone, so the
-            emphasis stays on timing, light, and disciplined framing.
-          </p>
+          <figure class="manifesto-image reveal">
+            <img
+              src="images/website-main/manifesto-image.avif"
+              alt="Sunset on a balcony with a silhouetted dog"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
         </div>
       </section>
 
@@ -186,6 +196,6 @@
       </div>
     </footer>
 
-    <script src="assets/site.js"></script>
+    <script src="assets/site.js?v=20260507-manifesto-image-1"></script>
   </body>
 </html>

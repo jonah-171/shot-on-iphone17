@@ -1,8 +1,122 @@
 const EMAIL = "jonahkim@iskonline.org";
 const AVIF_WIDTHS = [480, 720, 960, 1280, 1600, 1920];
+const ENTRY_IMAGE_SCALE_MULTIPLIER = 1.5;
+const AURORA_STRENGTH = 3;
+const AURORA_MOTION_MULTIPLIER = 5;
+const AURORA_ORBS = [
+  {
+    left: "10%",
+    top: "16%",
+    width: "clamp(18rem, 32vw, 34rem)",
+    height: "clamp(18rem, 32vw, 34rem)",
+    blur: "26px",
+    opacity: "0.9",
+    core: "rgba(136, 236, 255, 0.46)",
+    glow: "rgba(67, 139, 255, 0.28)",
+    driftX: 88,
+    driftY: 136,
+    swingX: 46,
+    swingY: 34,
+    velocityX: 0.28,
+    velocityY: -0.24,
+    scale: 1.08,
+    scaleRange: 0.05,
+    waveX: 1.2,
+    waveY: 0.9,
+    phase: 0.35,
+  },
+  {
+    left: "76%",
+    top: "22%",
+    width: "clamp(22rem, 34vw, 38rem)",
+    height: "clamp(22rem, 34vw, 38rem)",
+    blur: "30px",
+    opacity: "0.76",
+    core: "rgba(107, 255, 219, 0.34)",
+    glow: "rgba(38, 180, 224, 0.22)",
+    driftX: -74,
+    driftY: 122,
+    swingX: 34,
+    swingY: 40,
+    velocityX: -0.22,
+    velocityY: 0.2,
+    scale: 1.02,
+    scaleRange: 0.04,
+    waveX: 0.95,
+    waveY: 1.1,
+    phase: 1.4,
+  },
+  {
+    left: "26%",
+    top: "76%",
+    width: "clamp(20rem, 28vw, 30rem)",
+    height: "clamp(20rem, 28vw, 30rem)",
+    blur: "28px",
+    opacity: "0.7",
+    core: "rgba(114, 126, 255, 0.28)",
+    glow: "rgba(74, 88, 220, 0.18)",
+    driftX: 72,
+    driftY: -112,
+    swingX: 30,
+    swingY: 32,
+    velocityX: 0.2,
+    velocityY: -0.18,
+    scale: 1.04,
+    scaleRange: 0.03,
+    waveX: 1.15,
+    waveY: 0.85,
+    phase: 2.2,
+  },
+  {
+    left: "82%",
+    top: "78%",
+    width: "clamp(18rem, 26vw, 28rem)",
+    height: "clamp(18rem, 26vw, 28rem)",
+    blur: "24px",
+    opacity: "0.62",
+    core: "rgba(95, 212, 255, 0.24)",
+    glow: "rgba(32, 109, 214, 0.16)",
+    driftX: -58,
+    driftY: -96,
+    swingX: 26,
+    swingY: 26,
+    velocityX: -0.18,
+    velocityY: 0.16,
+    scale: 0.98,
+    scaleRange: 0.04,
+    waveX: 0.9,
+    waveY: 1.2,
+    phase: 0.9,
+  },
+  {
+    left: "52%",
+    top: "44%",
+    width: "clamp(16rem, 24vw, 24rem)",
+    height: "clamp(16rem, 24vw, 24rem)",
+    blur: "22px",
+    opacity: "0.52",
+    core: "rgba(157, 255, 216, 0.22)",
+    glow: "rgba(77, 193, 153, 0.14)",
+    driftX: 28,
+    driftY: 56,
+    swingX: 22,
+    swingY: 22,
+    velocityX: 0.14,
+    velocityY: -0.11,
+    scale: 0.96,
+    scaleRange: 0.03,
+    waveX: 1.4,
+    waveY: 1,
+    phase: 2.8,
+  },
+];
 
 const page = document.body.dataset.page;
 const base = document.body.dataset.base || ".";
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
 
 function resolveAssetPath(path) {
   if (!path) return "";
@@ -51,6 +165,27 @@ function ratioToCss(ratio) {
   return ratio.replace(":", " / ");
 }
 
+function parseAspectRatio(ratio) {
+  if (!ratio || typeof ratio !== "string") {
+    return 1.5;
+  }
+
+  const [width, height] = ratio.split(":").map(Number);
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return 1.5;
+  }
+
+  return width / height;
+}
+
+function currentViewportWidth() {
+  return typeof window === "undefined" ? 1280 : window.innerWidth;
+}
+
+function currentViewportHeight() {
+  return typeof window === "undefined" ? 900 : window.innerHeight;
+}
+
 function buildAvifSrcset(imagePath) {
   if (!imagePath) return "";
   const resolved = resolveAssetPath(imagePath);
@@ -68,36 +203,141 @@ function sizesForLayout(layout) {
   if (layout === "pair-small") {
     return "(max-width: 900px) 100vw, (max-width: 1280px) 40vw, 460px";
   }
+  if (layout === "gallery") {
+    return "(max-width: 900px) 100vw, (max-width: 1440px) 74vw, 1120px";
+  }
   return "(max-width: 900px) 100vw, 70vw";
 }
 
-function renderPhoto(photo, layout = "full") {
+function renderPhotoMedia(photo, layout = "full") {
   const aspect = ratioToCss(photo.aspect_ratio);
   const title = photo.title || "Untitled";
-  const note = photo.note || "";
   const image = resolveAssetPath(photo.image || "");
   const avifSrcset = buildAvifSrcset(photo.image || "");
   const sizes = sizesForLayout(layout);
 
   return `
-    <figure class="photo reveal">
-      <div class="photo-media" style="--aspect: ${aspect}">
-        <picture>
-          <source type="image/avif" srcset="${avifSrcset}" sizes="${sizes}" />
-          <img src="${image}" alt="${title}" loading="lazy" decoding="async" sizes="${sizes}" />
-        </picture>
-        <div class="photo-overlay">
-          <span class="corner tl"></span>
-          <span class="corner tr"></span>
-          <span class="corner bl"></span>
-          <span class="corner br"></span>
-        </div>
+    <div class="photo-media" style="--aspect: ${aspect}">
+      <picture>
+        <source type="image/avif" srcset="${avifSrcset}" sizes="${sizes}" />
+        <img src="${image}" alt="${title}" loading="lazy" decoding="async" sizes="${sizes}" />
+      </picture>
+      <div class="photo-overlay">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
       </div>
+    </div>
+  `;
+}
+
+function renderPhoto(photo, layout = "full", options = {}) {
+  const title = photo.title || "Untitled";
+  const note = photo.note || "";
+  const figureClass = ["photo", "reveal", options.className].filter(Boolean).join(" ");
+  const figureStyle = options.style ? ` style="${options.style}"` : "";
+
+  return `
+    <figure class="${figureClass}"${figureStyle}>
+      ${renderPhotoMedia(photo, layout)}
       <figcaption class="photo-caption">
         <div class="photo-title">${title}</div>
         ${note ? `<div class="photo-note">${note}</div>` : ""}
       </figcaption>
     </figure>
+  `;
+}
+
+function renderFrontMedia(entry, options = {}) {
+  const imagePath = entry.hero_image || "";
+  const className = ["front-media", options.className, !imagePath && "is-placeholder"]
+    .filter(Boolean)
+    .join(" ");
+
+  if (!imagePath) {
+    return `<div class="${className}" aria-hidden="true"></div>`;
+  }
+
+  const image = resolveAssetPath(imagePath);
+  const avifSrcset = buildAvifSrcset(imagePath);
+  const sizes = options.sizes || "100vw";
+  const loading = options.loading || "lazy";
+  const fetchPriority = options.fetchPriority ? ` fetchpriority="${options.fetchPriority}"` : "";
+
+  return `
+    <div class="${className}">
+      <picture>
+        <source type="image/avif" srcset="${avifSrcset}" sizes="${sizes}" />
+        <img src="${image}" alt="" loading="${loading}" decoding="async" sizes="${sizes}"${fetchPriority} />
+      </picture>
+    </div>
+  `;
+}
+
+function entryGalleryContainerWidth(viewportWidth = currentViewportWidth()) {
+  const horizontalPadding = viewportWidth <= 640 ? 32 : 48;
+  return Math.min(Math.max(viewportWidth - horizontalPadding, 0), 1560);
+}
+
+function measureEntryPhotoScale(
+  photos,
+  viewportWidth = currentViewportWidth(),
+  viewportHeight = currentViewportHeight()
+) {
+  const ratios = photos.map((photo) => parseAspectRatio(photo.aspect_ratio));
+  const containerWidth = entryGalleryContainerWidth(viewportWidth);
+  const galleryGap = viewportWidth < 900 ? 28 : 40;
+  const mediaColumnShare = viewportWidth < 900 ? 1 : 1.48 / (1.48 + 0.52);
+  const columnLimitedWidth =
+    viewportWidth < 900
+      ? containerWidth
+      : Math.max((containerWidth - galleryGap) * mediaColumnShare, 0);
+  const baseMaxWidth =
+    viewportWidth < 900
+      ? containerWidth
+      : Math.min(containerWidth * 0.72, viewportWidth * 0.66);
+  const maxWidth = Math.min(baseMaxWidth * ENTRY_IMAGE_SCALE_MULTIPLIER, columnLimitedWidth);
+  const baseMaxHeight = viewportWidth < 900 ? viewportHeight * 0.62 : viewportHeight * 0.84;
+  const maxHeight = baseMaxHeight * ENTRY_IMAGE_SCALE_MULTIPLIER;
+  const limits = ratios.map((ratio) =>
+    Math.min(maxWidth / Math.sqrt(ratio), maxHeight * Math.sqrt(ratio))
+  );
+
+  return Math.min(...limits) * 0.98;
+}
+
+function renderEntryFeature(photo, index, scale) {
+  const ratio = parseAspectRatio(photo.aspect_ratio);
+  const title = photo.title || "Untitled";
+  const note = photo.note || "";
+  const reversed = index % 2 === 1 ? " is-reverse" : "";
+  const mediaStyle = `--entry-photo-width: ${(scale * Math.sqrt(ratio)).toFixed(2)}px;`;
+
+  return `
+    <article class="entry-feature reveal${reversed}">
+      <div class="entry-feature-media" style="${mediaStyle}">
+        ${renderPhotoMedia(photo, "gallery")}
+      </div>
+      <div class="entry-feature-copy">
+        <h2 class="entry-feature-title">${title}</h2>
+        ${note ? `<p class="entry-feature-note">${note}</p>` : ""}
+      </div>
+    </article>
+  `;
+}
+
+function renderEntryGallery(photos) {
+  if (!photos?.length) {
+    return "";
+  }
+
+  const scale = measureEntryPhotoScale(photos);
+
+  return `
+    <div class="entry-gallery">
+      ${photos.map((photo, index) => renderEntryFeature(photo, index, scale)).join("")}
+    </div>
   `;
 }
 
@@ -144,9 +384,15 @@ function renderSpreads(photos, limit) {
 function renderArchiveCard(entry) {
   return `
     <a class="archive-card reveal" href="${blogUrl(entry.slug)}">
-      <div class="archive-card-meta">${entry.date} | ${entry.location}</div>
-      <div class="archive-card-title">${entry.title}</div>
-      <div>${entry.summary}</div>
+      ${renderFrontMedia(entry, {
+        className: "archive-card-front",
+        sizes: "(max-width: 900px) calc(100vw - 3rem), 360px",
+      })}
+      <div class="archive-card-content">
+        <div class="archive-card-meta">${entry.date} | ${entry.location}</div>
+        <div class="archive-card-title">${entry.title}</div>
+        <div>${entry.summary}</div>
+      </div>
     </a>
   `;
 }
@@ -155,7 +401,7 @@ function applyImageFallbacks(container) {
   const images = container.querySelectorAll("img");
   images.forEach((img) => {
     img.addEventListener("error", () => {
-      const wrapper = img.closest(".photo-media");
+      const wrapper = img.closest(".photo-media, .front-media");
       if (wrapper) {
         wrapper.classList.add("is-missing");
       }
@@ -183,49 +429,185 @@ function setupReveals() {
   elements.forEach((el) => observer.observe(el));
 }
 
-function setupHeroParallax() {
-  const hero = document.querySelector(".hero");
-  if (!hero) return;
-
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (reducedMotion.matches) {
+function setupAuroraBackground() {
+  if (document.querySelector(".site-aurora")) {
     return;
   }
 
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const backdrop = document.createElement("div");
+  backdrop.className = "site-aurora";
+  backdrop.setAttribute("aria-hidden", "true");
+
+  const veil = document.createElement("div");
+  veil.className = "aurora-veil";
+  backdrop.append(veil);
+
+  const orbs = AURORA_ORBS.map((config) => {
+    const orb = document.createElement("span");
+    orb.className = "aurora-orb";
+    orb.style.setProperty("--orb-left", config.left);
+    orb.style.setProperty("--orb-top", config.top);
+    orb.style.setProperty("--orb-width", config.width);
+    orb.style.setProperty("--orb-height", config.height);
+    orb.style.setProperty("--orb-blur", config.blur);
+    orb.style.setProperty("--orb-opacity", config.opacity);
+    orb.style.setProperty("--orb-core", config.core);
+    orb.style.setProperty("--orb-glow", config.glow);
+    backdrop.append(orb);
+    return orb;
+  });
+
+  document.body.prepend(backdrop);
+
+  let lastScrollY = window.scrollY;
+  let inertialVelocity = 0;
   let ticking = false;
 
-  function updateParallax() {
+  function getAuroraStrength(multiplier = 1) {
+    const baseStrength = reducedMotion.matches ? 1 + (AURORA_STRENGTH - 1) * 0.35 : AURORA_STRENGTH;
+    return 1 + (baseStrength - 1) * multiplier;
+  }
+
+  function getMotionMultiplier() {
+    return reducedMotion.matches
+      ? 1 + (AURORA_MOTION_MULTIPLIER - 1) * 0.25
+      : AURORA_MOTION_MULTIPLIER;
+  }
+
+  function applyAuroraIntensity() {
+    const glowStrength = getAuroraStrength(1);
+    const opacityStrength = getAuroraStrength(0.5);
+    const orbBrightness = 1 + (glowStrength - 1) * 0.75;
+    const orbSaturation = 1 + (glowStrength - 1) * 0.4;
+    const orbBlurScale = 1 + (glowStrength - 1) * 0.28;
+    const backdropBrightness = 1 + (glowStrength - 1) * 0.18;
+    const backdropSaturation = 1 + (glowStrength - 1) * 0.22;
+
+    backdrop.style.setProperty("--aurora-brightness", backdropBrightness.toFixed(2));
+    backdrop.style.setProperty("--aurora-saturation", backdropSaturation.toFixed(2));
+
+    orbs.forEach((orb, index) => {
+      const baseOpacity = parseFloat(AURORA_ORBS[index].opacity);
+      const opacity = clamp(baseOpacity * opacityStrength, 0, 1);
+
+      orb.style.setProperty("--orb-opacity", opacity.toFixed(3));
+      orb.style.setProperty("--orb-brightness", orbBrightness.toFixed(2));
+      orb.style.setProperty("--orb-saturation", orbSaturation.toFixed(2));
+      orb.style.setProperty("--orb-blur-scale", orbBlurScale.toFixed(2));
+    });
+  }
+
+  function updateAurora() {
     ticking = false;
 
-    const rect = hero.getBoundingClientRect();
-    const progress = Math.min(Math.max(-rect.top / Math.max(rect.height, 1), 0), 1);
-    const backgroundShift = progress * Math.min(window.innerHeight * 0.08, 72);
-    const foregroundShift = progress * -Math.min(window.innerHeight * 0.14, 120);
+    const scrollLimit = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const scrollY = window.scrollY;
+    const progress = scrollY / scrollLimit;
+    const delta = scrollY - lastScrollY;
+    const motionStrength = getAuroraStrength(0.45);
+    const velocityStrength = getAuroraStrength(0.55);
+    const atmosphereStrength = getAuroraStrength(0.8);
+    const pulseStrength = getAuroraStrength(0.22);
+    const motionMultiplier = getMotionMultiplier();
+    const maxOrbOffsetX = window.innerWidth * 0.72;
+    const maxOrbOffsetY = window.innerHeight * 0.78;
+    const maxBackdropShiftX = window.innerWidth * 0.22;
+    const maxBackdropShiftY = window.innerHeight * 0.28;
+    const motionFactor = (reducedMotion.matches ? 0.55 : 1.85) * motionStrength;
+    const inertiaBlend = (reducedMotion.matches ? 0.1 : 0.3) * (1 + (velocityStrength - 1) * 0.2);
+    const inertiaCarry = reducedMotion.matches ? 0.72 : 0.8;
 
-    hero.style.setProperty("--hero-background-shift", `${backgroundShift.toFixed(2)}px`);
-    hero.style.setProperty("--hero-foreground-shift", `${foregroundShift.toFixed(2)}px`);
+    lastScrollY = scrollY;
+    inertialVelocity = inertialVelocity * inertiaCarry + delta * inertiaBlend;
+
+    if (Math.abs(inertialVelocity) < 0.01) {
+      inertialVelocity = 0;
+    }
+
+    const clampedVelocity = clamp(inertialVelocity, -240 * velocityStrength, 240 * velocityStrength);
+
+    orbs.forEach((orb, index) => {
+      const config = AURORA_ORBS[index];
+      const waveX = Math.sin(progress * Math.PI * 2 * config.waveX + config.phase);
+      const waveY = Math.cos(progress * Math.PI * 2 * config.waveY + config.phase);
+      const rawOffsetX =
+        ((progress - 0.5) * config.driftX + waveX * config.swingX) * motionFactor +
+        clampedVelocity * config.velocityX;
+      const rawOffsetY =
+        ((progress - 0.5) * config.driftY + waveY * config.swingY) * motionFactor +
+        clampedVelocity * config.velocityY;
+      const offsetX = clamp(rawOffsetX * motionMultiplier, -maxOrbOffsetX, maxOrbOffsetX);
+      const offsetY = clamp(rawOffsetY * motionMultiplier, -maxOrbOffsetY, maxOrbOffsetY);
+      const scale =
+        config.scale +
+        Math.sin(progress * Math.PI * config.waveY + config.phase) *
+          config.scaleRange *
+          pulseStrength *
+          (reducedMotion.matches ? 0.45 : 1);
+
+      orb.style.setProperty("--orb-offset-x", `${offsetX.toFixed(2)}px`);
+      orb.style.setProperty("--orb-offset-y", `${offsetY.toFixed(2)}px`);
+      orb.style.setProperty("--orb-scale", scale.toFixed(3));
+    });
+
+    const motionGain = Math.min(
+      Math.abs(clampedVelocity) / 260,
+      (reducedMotion.matches ? 0.04 : 0.1) * getAuroraStrength(0.35)
+    );
+    const opacity = clamp(0.9 + motionGain, 0, 1);
+    const rawRotation =
+      ((progress - 0.5) * 4.6 + clampedVelocity * 0.022) *
+      (reducedMotion.matches ? 0.45 : 1) *
+      motionStrength;
+    const rotation = clamp(rawRotation * motionMultiplier, -24, 24);
+    const scale =
+      1 +
+      Math.min(
+        Math.abs(clampedVelocity) / 1100,
+        (reducedMotion.matches ? 0.01 : 0.032) * getAuroraStrength(0.55)
+      );
+    const rawShiftX =
+      (Math.sin(progress * Math.PI * 2.1) * 18 + clampedVelocity * -0.075) *
+      (reducedMotion.matches ? 0.35 : 1) *
+      atmosphereStrength;
+    const rawShiftY =
+      ((progress - 0.5) * 52 + clampedVelocity * 0.085) *
+      (reducedMotion.matches ? 0.35 : 1) *
+      atmosphereStrength;
+    const shiftX = clamp(rawShiftX * motionMultiplier, -maxBackdropShiftX, maxBackdropShiftX);
+    const shiftY = clamp(rawShiftY * motionMultiplier, -maxBackdropShiftY, maxBackdropShiftY);
+
+    backdrop.style.opacity = opacity.toFixed(3);
+    backdrop.style.setProperty("--aurora-shift-x", `${shiftX.toFixed(2)}px`);
+    backdrop.style.setProperty("--aurora-shift-y", `${shiftY.toFixed(2)}px`);
+    backdrop.style.setProperty("--aurora-scale", scale.toFixed(3));
+    backdrop.style.setProperty("--aurora-rotation", `${rotation.toFixed(2)}deg`);
   }
 
   function requestTick() {
     if (ticking) return;
     ticking = true;
-    window.requestAnimationFrame(updateParallax);
+    window.requestAnimationFrame(updateAurora);
   }
 
-  updateParallax();
+  function syncMotionPreference() {
+    lastScrollY = window.scrollY;
+    inertialVelocity = 0;
+    applyAuroraIntensity();
+    requestTick();
+  }
+
   window.addEventListener("scroll", requestTick, { passive: true });
   window.addEventListener("resize", requestTick);
 
   if (typeof reducedMotion.addEventListener === "function") {
-    reducedMotion.addEventListener("change", (event) => {
-      if (event.matches) {
-        hero.style.setProperty("--hero-background-shift", "0px");
-        hero.style.setProperty("--hero-foreground-shift", "0px");
-        return;
-      }
-      requestTick();
-    });
+    reducedMotion.addEventListener("change", syncMotionPreference);
+  } else if (typeof reducedMotion.addListener === "function") {
+    reducedMotion.addListener(syncMotionPreference);
   }
+
+  syncMotionPreference();
 }
 
 function renderHome(seriesIndex) {
@@ -262,6 +644,7 @@ function renderHome(seriesIndex) {
   if (archiveContainer) {
     const preview = seriesIndex.slice(0, 6).map(renderArchiveCard).join("");
     archiveContainer.innerHTML = preview;
+    applyImageFallbacks(archiveContainer);
   }
 }
 
@@ -299,19 +682,24 @@ function renderBlogPage(seriesIndex) {
 
   const hasPhotos = entry.photos && entry.photos.length;
   container.innerHTML = `
-    <section class="section" data-index="01">
-      <div class="container">
-        <div class="section-kicker">Entry</div>
-        <h1 class="section-title">${entry.title}</h1>
+    <section class="entry-hero">
+      ${renderFrontMedia(entry, {
+        className: "entry-hero-media",
+        loading: "eager",
+        fetchPriority: "high",
+      })}
+      <div class="container entry-hero-content">
+        <div class="section-kicker reveal">Entry</div>
+        <h1 class="section-title reveal">${entry.title}</h1>
         <div class="latest-theme-meta">${entry.date} | ${entry.location}</div>
-        <p>${entry.summary}</p>
+        <p class="entry-hero-summary reveal">${entry.summary}</p>
       </div>
     </section>
-    <section class="section">
+    <section class="section entry-gallery-section">
       <div class="container">
         ${
           hasPhotos
-            ? `<div class="spreads">${renderSpreads(entry.photos)}</div>`
+            ? renderEntryGallery(entry.photos)
             : `<div class="empty-state reveal">Images for this entry will be added soon.</div>`
         }
       </div>
@@ -325,12 +713,11 @@ function renderArchivePage(seriesIndex) {
   const container = document.querySelector("[data-archive-list]");
   if (!container) return;
   container.innerHTML = seriesIndex.map(renderArchiveCard).join("");
+  applyImageFallbacks(container);
 }
 
 async function init() {
-  if (page === "home") {
-    setupHeroParallax();
-  }
+  setupAuroraBackground();
 
   const seriesIndex = await loadBlogIndex();
   if (!seriesIndex) return;
