@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shot on iPhone - Jonah Kim</title>
-    <link rel="stylesheet" href="assets/styles.css?v=20260507-manifesto-image-1" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260508-latest-image-balance-1" />
   </head>
   <body data-page="home" data-base=".">
     <header class="site-header">
@@ -55,8 +55,7 @@
         </picture>
         <div class="container hero-layout">
           <div class="hero-content">
-            <div class="section-kicker reveal">Portfolio</div>
-            <h1 class="hero-title reveal">Shot on iPhone</h1>
+            <h1 class="hero-title reveal">Shot on iPhone.</h1>
             <p class="hero-tagline reveal">
               Skill over gear. Proof in every frame.
             </p>
@@ -71,7 +70,6 @@
       <section class="section manifesto" id="manifesto" data-index="01">
         <div class="container manifesto-layout">
           <div class="manifesto-copy">
-            <div class="section-kicker reveal">Manifesto</div>
             <div class="manifesto-quote reveal">
               Great images come from attention, not equipment.
             </div>
@@ -82,12 +80,27 @@
             </p>
           </div>
           <figure class="manifesto-image reveal">
-            <img
-              src="images/website-main/manifesto-image.avif"
-              alt="Sunset on a balcony with a silhouetted dog"
-              loading="lazy"
-              decoding="async"
-            />
+            <picture>
+              <source
+                type="image/avif"
+                srcset="
+                  images/website-main/manifesto-image-w640.avif 640w,
+                  images/website-main/manifesto-image-w960.avif 960w,
+                  images/website-main/manifesto-image-w1280.avif 1280w,
+                  images/website-main/manifesto-image-w1600.avif 1600w,
+                  images/website-main/manifesto-image-w1920.avif 1920w,
+                  images/website-main/manifesto-image-w2560.avif 2560w,
+                  images/website-main/manifesto-image-w3200.avif 3200w
+                "
+                sizes="(max-width: 640px) 100vw, (max-width: 960px) 92vw, (max-width: 1300px) 55vw, 760px"
+              />
+              <img
+                src="images/website-main/manifesto-image-w1600.avif"
+                alt="Sunset on a balcony with a silhouetted dog"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
           </figure>
         </div>
       </section>
@@ -109,7 +122,6 @@
 
       <section class="section" id="process" data-index="03">
         <div class="container">
-          <div class="section-kicker reveal">Process</div>
           <h2 class="section-title reveal">Constraints that sharpen the work</h2>
           <div class="process-list">
             <div class="process-item reveal">
@@ -121,7 +133,25 @@
                 <div class="process-title">Timing</div>
                 <p>Wait for the single moment that carries the image.</p>
               </div>
-              <div class="process-thumb"></div>
+              <div class="process-thumb">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="
+                      images/pocket-archeology/IMG_2440-w480.avif 480w,
+                      images/pocket-archeology/IMG_2440-w720.avif 720w,
+                      images/pocket-archeology/IMG_2440-w960.avif 960w
+                    "
+                    sizes="(max-width: 900px) 100vw, 260px"
+                  />
+                  <img
+                    src="images/pocket-archeology/IMG_2440.jpeg"
+                    alt="Lens flare and hard sunlight cutting across a dark object"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
             </div>
             <div class="process-item reveal">
               <div>
@@ -132,7 +162,25 @@
                 <div class="process-title">Editing</div>
                 <p>Small adjustments only. Contrast and tone stay restrained.</p>
               </div>
-              <div class="process-thumb"></div>
+              <div class="process-thumb">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="
+                      images/between-the-trees/Final-4-w480.avif 480w,
+                      images/between-the-trees/Final-4-w720.avif 720w,
+                      images/between-the-trees/Final-4-w960.avif 960w
+                    "
+                    sizes="(max-width: 900px) 100vw, 260px"
+                  />
+                  <img
+                    src="images/between-the-trees/Final-4.jpeg"
+                    alt="Wide forest creek composition divided by leaves, dark mud, and ice"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
             </div>
             <div class="process-item reveal">
               <div>
@@ -143,7 +191,25 @@
                 <div class="process-title">Consistency</div>
                 <p>Every series follows the same discipline to keep the voice clear.</p>
               </div>
-              <div class="process-thumb"></div>
+              <div class="process-thumb">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcset="
+                      images/intermission/Day8-w480.avif 480w,
+                      images/intermission/Day8-w720.avif 720w,
+                      images/intermission/Day8-w960.avif 960w
+                    "
+                    sizes="(max-width: 900px) 100vw, 260px"
+                  />
+                  <img
+                    src="images/intermission/Day8.jpeg"
+                    alt="Snowboarder captured mid-descent on a bright snowy slope"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
             </div>
           </div>
         </div>
@@ -151,9 +217,8 @@
 
       <section class="section" id="about" data-index="04">
         <div class="container">
-          <div class="about-grid">
-            <div>
-              <div class="section-kicker reveal">About</div>
+          <div class="about-grid about-home-grid">
+            <div class="about-home-copy">
               <h2 class="section-title reveal">Jonah Kim</h2>
               <div class="latest-theme-meta reveal">Krakow, Poland</div>
               <p class="reveal">
@@ -163,30 +228,40 @@
                 simple idea: skill matters more than gear.
               </p>
               <a class="button button-ghost" href="about/">Read full about</a>
+              <div class="about-card reveal">
+                <div class="section-kicker">Contact</div>
+                <h3 class="section-title">Start a project</h3>
+                <p>Commissions, collaborations, and editorial inquiries.</p>
+                <a class="button button-primary" href="mailto:jonahkim@iskonline.org">Email Jonah</a>
+                <div class="contact-line">jonahkim@iskonline.org</div>
+              </div>
             </div>
-            <div class="about-card reveal">
-              <div class="section-kicker">Contact</div>
-              <h3 class="section-title">Start a project</h3>
-              <p>Commissions, collaborations, and editorial inquiries.</p>
-              <a class="button button-primary" href="mailto:jonahkim@iskonline.org">Email Jonah</a>
-              <div class="contact-line">jonahkim@iskonline.org</div>
-            </div>
+            <figure class="about-portrait about-portrait-home reveal">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset="
+                    images/website-main/jonah-kim-2-w480.avif 480w,
+                    images/website-main/jonah-kim-2-w720.avif 720w,
+                    images/website-main/jonah-kim-2-w960.avif 960w,
+                    images/website-main/jonah-kim-2-w1280.avif 1280w,
+                    images/website-main/jonah-kim-2-w1600.avif 1600w,
+                    images/website-main/jonah-kim-2-w1920.avif 1920w
+                  "
+                  sizes="(max-width: 900px) calc(100vw - 3rem), (max-width: 1240px) 46vw, 460px"
+                />
+                <img
+                  src="images/website-main/Jonah%20Kim-2.jpg"
+                  alt="Portrait of Jonah Kim"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
           </div>
         </div>
       </section>
 
-      <section class="section" id="archive" data-index="05">
-        <div class="container">
-          <div class="latest-theme-header">
-            <div>
-              <div class="section-kicker reveal">Archive</div>
-              <h2 class="section-title reveal">All entries</h2>
-            </div>
-            <a class="button button-ghost" href="archive/">View archive</a>
-          </div>
-          <div class="archive-grid" data-archive-preview></div>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">

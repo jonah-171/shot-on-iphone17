@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About - Shot on iPhone</title>
-    <link rel="stylesheet" href="../assets/styles.css?v=20260507-manifesto-image-1" />
+    <link rel="stylesheet" href="../assets/styles.css?v=20260508-jonah-layout-1" />
   </head>
   <body data-page="about" data-base="..">
     <header class="site-header">
@@ -20,47 +20,93 @@
     <main>
       <section class="section" data-index="01">
         <div class="container">
-          <div class="section-kicker reveal">About</div>
-          <h1 class="section-title reveal">Jonah Kim</h1>
-          <p class="reveal">
-            I am a Krakow-based photographer working across landscape, nature, architecture, and
-            portraiture. My focus is restraint: light, timing, and framing over equipment.
-          </p>
+          <div class="about-intro-layout">
+            <div>
+              <div class="section-kicker reveal">About</div>
+              <h1 class="section-title reveal">Jonah Kim</h1>
+              <p class="reveal">
+                I am a Krakow-based photographer working across landscape, nature, architecture, and
+                portraiture. My focus is restraint: light, timing, and framing over equipment.
+              </p>
+            </div>
+            <figure class="about-portrait about-portrait-intro reveal">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset="
+                    ../images/website-main/jonah-kim-2-w480.avif 480w,
+                    ../images/website-main/jonah-kim-2-w720.avif 720w,
+                    ../images/website-main/jonah-kim-2-w960.avif 960w,
+                    ../images/website-main/jonah-kim-2-w1280.avif 1280w,
+                    ../images/website-main/jonah-kim-2-w1600.avif 1600w,
+                    ../images/website-main/jonah-kim-2-w1920.avif 1920w
+                  "
+                  sizes="(max-width: 900px) calc(100vw - 3rem), 420px"
+                />
+                <img
+                  src="../images/website-main/Jonah%20Kim-2.jpg"
+                  alt="Portrait of Jonah Kim"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
+          </div>
         </div>
       </section>
 
-      <section class="section" data-index="02">
+      <section class="section about-camera-section" data-index="02">
         <div class="container">
           <div class="section-kicker reveal">Camera</div>
-          <h2 class="section-title reveal">iPhone as a constraint</h2>
-          <p class="reveal">
-            I use iPhone intentionally. The limitations keep the work precise: a fixed lens, fast
-            capture, and controlled exposure choices. Every series in this archive is made on the
-            same device to keep the voice consistent.
-          </p>
-          <div class="process-list">
-            <div class="process-item reveal">
-              <div>
-                <div class="process-title">Lens discipline</div>
-                <p>One focal range, strong composition, no reliance on zoom.</p>
+          <div class="about-camera-layout">
+            <div>
+              <h2 class="section-title reveal">iPhone as a constraint</h2>
+              <p class="reveal">
+                I use iPhone intentionally. The limitations keep the work precise: a fixed lens,
+                fast capture, and controlled exposure choices. Every series in this archive is made
+                on the same device to keep the voice consistent.
+              </p>
+              <div class="process-list about-camera-process">
+                <div class="process-item reveal">
+                  <div>
+                    <div class="process-title">Lens discipline</div>
+                    <p>One focal range, strong composition, no reliance on zoom.</p>
+                  </div>
+                  <div>
+                    <div class="process-title">Light first</div>
+                    <p>Expose for highlights and preserve shape before color.</p>
+                  </div>
+                </div>
+                <div class="process-item reveal">
+                  <div>
+                    <div class="process-title">Minimal edits</div>
+                    <p>Small tonal adjustments, no heavy manipulation.</p>
+                  </div>
+                  <div>
+                    <div class="process-title">Consistency</div>
+                    <p>Every project follows the same capture and edit rules.</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <div class="process-title">Light first</div>
-                <p>Expose for highlights and preserve shape before color.</p>
-              </div>
-              <div class="process-thumb"></div>
             </div>
-            <div class="process-item reveal">
-              <div>
-                <div class="process-title">Minimal edits</div>
-                <p>Small tonal adjustments, no heavy manipulation.</p>
-              </div>
-              <div>
-                <div class="process-title">Consistency</div>
-                <p>Every project follows the same capture and edit rules.</p>
-              </div>
-              <div class="process-thumb"></div>
-            </div>
+            <figure class="about-camera-device reveal">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset="
+                    ../images/website-main/iphone-17-pro-deepblue-w480.avif 480w,
+                    ../images/website-main/iphone-17-pro-deepblue-w720.avif 720w
+                  "
+                  sizes="(max-width: 900px) 56vw, 260px"
+                />
+                <img
+                  src="../images/website-main/iphone-17-pro-deepblue.png"
+                  alt="Deep blue iPhone used for the photo series"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
           </div>
         </div>
       </section>
