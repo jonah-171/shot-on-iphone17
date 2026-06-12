@@ -211,7 +211,7 @@ function sizesForLayout(layout) {
 
 function renderPhotoMedia(photo, layout = "full") {
   const aspect = ratioToCss(photo.aspect_ratio);
-  const title = photo.title || "Untitled";
+  const title = photo.alt || photo.title || "Documentary photograph";
   const image = resolveAssetPath(photo.image || "");
   const avifSrcset = buildAvifSrcset(photo.image || "");
   const sizes = sizesForLayout(layout);
@@ -283,12 +283,14 @@ function entryGalleryContainerWidth(viewportWidth = currentViewportWidth()) {
 function measureEntryPhotoScale(
   photos,
   viewportWidth = currentViewportWidth(),
-  viewportHeight = currentViewportHeight()
+  viewportHeight = currentViewportHeight(),
+  options = {}
 ) {
   const ratios = photos.map((photo) => parseAspectRatio(photo.aspect_ratio));
   const containerWidth = entryGalleryContainerWidth(viewportWidth);
   const galleryGap = viewportWidth < 900 ? 28 : 40;
-  const mediaColumnShare = viewportWidth < 900 ? 1 : 1.48 / (1.48 + 0.52);
+  const mediaOnly = options.mediaOnly === true;
+  const mediaColumnShare = viewportWidth < 900 || mediaOnly ? 1 : 1.48 / (1.48 + 0.52);
   const columnLimitedWidth =
     viewportWidth < 900
       ? containerWidth
@@ -296,7 +298,7 @@ function measureEntryPhotoScale(
   const baseMaxWidth =
     viewportWidth < 900
       ? containerWidth
-      : Math.min(containerWidth * 0.72, viewportWidth * 0.66);
+      : Math.min(containerWidth * (mediaOnly ? 0.86 : 0.72), viewportWidth * (mediaOnly ? 0.78 : 0.66));
   const maxWidth = Math.min(baseMaxWidth * ENTRY_IMAGE_SCALE_MULTIPLIER, columnLimitedWidth);
   const baseMaxHeight = viewportWidth < 900 ? viewportHeight * 0.62 : viewportHeight * 0.84;
   const maxHeight = baseMaxHeight * ENTRY_IMAGE_SCALE_MULTIPLIER;
@@ -307,37 +309,73 @@ function measureEntryPhotoScale(
   return Math.min(...limits) * 0.98;
 }
 
-function renderEntryFeature(photo, index, scale) {
+function renderEntryFeature(photo, index, scale, options = {}) {
   const ratio = parseAspectRatio(photo.aspect_ratio);
   const title = photo.title || "Untitled";
   const note = photo.note || "";
-  const reversed = index % 2 === 1 ? " is-reverse" : "";
+  const mediaOnly = options.showPhotoDetails === false;
+  const featureClass = ["entry-feature", "reveal", index % 2 === 1 && "is-reverse", mediaOnly && "is-media-only"]
+    .filter(Boolean)
+    .join(" ");
   const mediaStyle = `--entry-photo-width: ${(scale * Math.sqrt(ratio)).toFixed(2)}px;`;
 
   return `
-    <article class="entry-feature reveal${reversed}">
+    <article class="${featureClass}">
       <div class="entry-feature-media" style="${mediaStyle}">
         ${renderPhotoMedia(photo, "gallery")}
       </div>
-      <div class="entry-feature-copy">
-        <h2 class="entry-feature-title">${title}</h2>
-        ${note ? `<p class="entry-feature-note">${note}</p>` : ""}
-      </div>
+      ${
+        mediaOnly
+          ? ""
+          : `<div class="entry-feature-copy">
+              <h2 class="entry-feature-title">${title}</h2>
+              ${note ? `<p class="entry-feature-note">${note}</p>` : ""}
+            </div>`
+      }
     </article>
   `;
 }
 
-function renderEntryGallery(photos) {
+function renderEntryGallery(photos, options = {}) {
   if (!photos?.length) {
     return "";
   }
 
-  const scale = measureEntryPhotoScale(photos);
+  const showPhotoDetails = options.showPhotoDetails !== false;
+  const scale = measureEntryPhotoScale(photos, currentViewportWidth(), currentViewportHeight(), {
+    mediaOnly: !showPhotoDetails,
+  });
 
   return `
     <div class="entry-gallery">
-      ${photos.map((photo, index) => renderEntryFeature(photo, index, scale)).join("")}
+      ${photos.map((photo, index) => renderEntryFeature(photo, index, scale, { showPhotoDetails })).join("")}
     </div>
+  `;
+}
+
+function renderEntryEssay(essay) {
+  if (!essay) {
+    return "";
+  }
+
+  const paragraphs = String(essay)
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  if (!paragraphs.length) {
+    return "";
+  }
+
+  return `
+    <section class="section entry-essay-section">
+      <div class="container">
+        <article class="entry-essay reveal">
+          <div class="section-kicker">Artist Statement</div>
+          ${paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+        </article>
+      </div>
+    </section>
   `;
 }
 
@@ -695,11 +733,12 @@ function renderBlogPage(seriesIndex) {
         <p class="entry-hero-summary reveal">${entry.summary}</p>
       </div>
     </section>
+    ${renderEntryEssay(entry.essay)}
     <section class="section entry-gallery-section">
       <div class="container">
         ${
           hasPhotos
-            ? renderEntryGallery(entry.photos)
+            ? renderEntryGallery(entry.photos, { showPhotoDetails: entry.photo_captions !== false })
             : `<div class="empty-state reveal">Images for this entry will be added soon.</div>`
         }
       </div>

@@ -445,6 +445,31 @@ body[data-page="home"] #latest .spread-pair.reverse {
   gap: clamp(5rem, 9vw, 8rem);
 }
 
+.entry-essay-section {
+  padding-top: clamp(3rem, 6vw, 5rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.entry-essay {
+  max-width: 72ch;
+  margin-inline: auto;
+  font-size: clamp(1.02rem, 1.32vw, 1.2rem);
+  line-height: 1.82;
+  color: rgba(245, 245, 247, 0.84);
+}
+
+.entry-essay .section-kicker {
+  margin-bottom: 1rem;
+}
+
+.entry-essay p {
+  margin: 0 0 1.25rem;
+}
+
+.entry-essay p:last-child {
+  margin-bottom: 0;
+}
+
 .entry-hero {
   position: relative;
   min-height: clamp(32rem, 72svh, 52rem);
@@ -534,6 +559,13 @@ body[data-page="home"] #latest .spread-pair.reverse {
   grid-template-areas: "copy media";
 }
 
+.entry-feature.is-media-only,
+.entry-feature.is-media-only.is-reverse {
+  grid-template-columns: 1fr;
+  grid-template-areas: "media";
+  min-height: clamp(42rem, 96svh, 68rem);
+}
+
 .entry-feature-media {
   grid-area: media;
   inline-size: min(100%, var(--entry-photo-width, 100%));
@@ -542,6 +574,11 @@ body[data-page="home"] #latest .spread-pair.reverse {
 
 .entry-feature.is-reverse .entry-feature-media {
   justify-self: end;
+}
+
+.entry-feature.is-media-only .entry-feature-media,
+.entry-feature.is-media-only.is-reverse .entry-feature-media {
+  justify-self: center;
 }
 
 .entry-feature-media .photo-media {
@@ -668,6 +705,15 @@ body[data-page="home"] #latest .spread-pair.reverse {
 
 .front-media.is-missing img {
   opacity: 0;
+}
+
+.entry-hero .entry-hero-media {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 0.88;
 }
 
 .photo-overlay {
